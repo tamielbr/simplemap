@@ -1,4 +1,4 @@
-leaflet
+Leaflet
 =======
 
-leaflet
+Alguns scripts para mapeamento simples utilizando Leaflet/CSS/GeoJson
