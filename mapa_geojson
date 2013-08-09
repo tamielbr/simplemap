@@ -1,0 +1,115 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  
+	<title>Mapa dos Pólos UAB</title>
+	<meta charset="utf-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='http://fonts.googleapis.com/css?family=Armata' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
+
+	<style type="text/css" charset="utf-8">
+		#map {
+			height: 700px;
+			margin-left:auto;
+			margin-right:auto;
+			width:95%;
+			border-style: solid;
+			border-color: #ffffff;
+			border-width: 10px;
+		}
+		
+		p {
+			font-family: 'Armata', sans-serif;
+			font-size: 12px;
+			margin-left:auto;
+			margin-right:auto;
+			width:95%;
+			color: white;
+		}
+		h1 {
+			font-family: 'Armata', sans-serif;
+			font-size: 18px;
+			text-align: center;
+			font-weight: bold;
+			color: white;
+			margin-top: 10px;
+		}
+		
+		a:link { color: #cc1; }
+		a:visited { color: #cc1; }
+		a:hover { color: #c00; }
+		a { text-decoration: none;}
+		
+		body {
+			background-color: #000000;
+		}
+		
+	</style>
+</head>
+	
+<body>
+
+	<h1>Mapa dos Pólos UAB</h1>
+	
+	<div id="map"></div><br>
+	
+	<p>
+		<!--HTML de rodapé--> 
+    <!--Footer HTML-->
+	</p>
+
+	
+	<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+	<script src="polos.js" type="text/javascript"></script>
+	
+	<!--Código baseado nos tutoriais disponíveis no site do Leaflet.js-->
+	<!--Code based on the turorials available on the Leaflet.js site-->
+	<script>
+	
+	//Cria o mapa, marca o ponto inicial, e nível de zoom	
+	var map = L.map('map').setView([-13.923404,-51.555177], 4);
+
+	//Define a origem dos 'tiles' ou do mapa em si, nesse caso, utilizamos Cloudmade (grátis, precisa de chave API)
+	//Defines the origin of the 'tiles' or the map itself, using Clodumade (free, need API key)
+	L.tileLayer('http://{s}.tile.cloudmade.com/[API KEY]/997/256/{z}/{x}/{y}.png', {
+		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>', maxZoom: 18
+		}).addTo(map);
+	
+	//Abre os dados do arquivo fonte em GeoJSON
+	L.geoJson(polosUAB, {
+		
+		onEachFeature: function (feature, marker) {
+			
+		if (feature.properties && feature.properties.Polo && feature.properties.URL) {
+			
+			//Define os dados do popup, quando clicado
+			//Defines popup data, when clicked
+			marker.bindPopup('<b>Pólo: ' + feature.properties.Polo + '</b>' + '<br>' +
+					feature.properties.Cidade + '<br><br>' + 
+					'<iframe width="100%" frameBorder="0" src="' + feature.properties.URL + '" ' + 
+					'></iframe>', {minWidth: 1100}); //Iframe busca uma HTML definida no GeoJson. Iframe gets URL from GeoJson
+			
+			}
+		},
+		
+		//Define o estílo do ícone/pin
+		//Defines icon/pin style
+		pointToLayer: function (feature, latlng) {
+			return L.circleMarker(latlng, {
+					radius: 7,
+					fillColor: "#ff7800",
+					color: "#222",
+					weight: 2,
+					opacity: 6,
+					fillOpacity: 0.3
+				});
+			}
+		}).addTo(map);
+	
+
+	</script>
+</body>
+
+</html>
